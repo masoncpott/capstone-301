@@ -2,17 +2,17 @@ import { BarChart, LineChart, PieChart } from '@mui/x-charts'
 import { Box, Chip, Paper, Stack, Typography } from '@mui/material'
 import { useOutletContext } from 'react-router-dom'
 import type { DashboardContext } from '../types'
-import { genrePopularity, regionalTrend, sourceRoi, summarize } from '../lib/metrics'
+import { regionalTrend, sourceRoi, summarize } from '../lib/metrics'
 
 function formatMillions(value: number) {
   return `${value.toFixed(1)}M`
 }
 
 export function DashboardPage() {
-  const { filteredRecords } = useOutletContext<DashboardContext>()
+  const { allRecords, filteredRecords } = useOutletContext<DashboardContext>()
 
   const summary = summarize(filteredRecords)
-  const genreData = genrePopularity(filteredRecords).slice(0, 6)
+  const genreData = buildAlphabeticalGenreSeries(allRecords, filteredRecords)
   const sourceData = sourceRoi(filteredRecords)
   const trendData = regionalTrend(filteredRecords)
 
@@ -74,6 +74,17 @@ export function DashboardPage() {
       </Paper>
     </Stack>
   )
+}
+
+function buildAlphabeticalGenreSeries(allRecords: DashboardContext['allRecords'], filteredRecords: DashboardContext['filteredRecords']) {
+  const allGenres = [...new Set(allRecords.map((item) => item.genre))].sort((a, b) => a.localeCompare(b))
+  const viewsByGenre = new Map<string, number>()
+
+  filteredRecords.forEach((item) => {
+    viewsByGenre.set(item.genre, (viewsByGenre.get(item.genre) ?? 0) + item.viewsM)
+  })
+
+  return allGenres.map((genre) => ({ label: genre, total: Number((viewsByGenre.get(genre) ?? 0).toFixed(2)) }))
 }
 
 function KpiCard({ title, value }: { title: string; value: string }) {

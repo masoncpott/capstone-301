@@ -2,11 +2,11 @@ import { BarChart } from '@mui/x-charts'
 import { Paper, Stack, Typography } from '@mui/material'
 import { useOutletContext } from 'react-router-dom'
 import type { DashboardContext } from '../types'
-import { genrePopularity, topRegionsByGenre } from '../lib/metrics'
+import { topRegionsByGenre } from '../lib/metrics'
 
 export function GenrePage() {
-  const { filteredRecords } = useOutletContext<DashboardContext>()
-  const genreData = genrePopularity(filteredRecords)
+  const { allRecords, filteredRecords } = useOutletContext<DashboardContext>()
+  const genreData = buildAlphabeticalGenreSeries(allRecords, filteredRecords)
   const topCrossovers = topRegionsByGenre(filteredRecords)
 
   return (
@@ -37,4 +37,15 @@ export function GenrePage() {
       </Paper>
     </Stack>
   )
+}
+
+function buildAlphabeticalGenreSeries(allRecords: DashboardContext['allRecords'], filteredRecords: DashboardContext['filteredRecords']) {
+  const allGenres = [...new Set(allRecords.map((item) => item.genre))].sort((a, b) => a.localeCompare(b))
+  const viewsByGenre = new Map<string, number>()
+
+  filteredRecords.forEach((item) => {
+    viewsByGenre.set(item.genre, (viewsByGenre.get(item.genre) ?? 0) + item.viewsM)
+  })
+
+  return allGenres.map((genre) => ({ label: genre, total: Number((viewsByGenre.get(genre) ?? 0).toFixed(2)) }))
 }
