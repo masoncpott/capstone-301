@@ -3,6 +3,7 @@ import { Box, Chip, Paper, Stack, Typography } from '@mui/material'
 import { useOutletContext } from 'react-router-dom'
 import type { DashboardContext } from '../types'
 import { regionalTrend, sourceRoi, summarize } from '../lib/metrics'
+import { GENRE_COLORS } from '../data/contentData'
 
 function formatMillions(value: number) {
   return `${value.toFixed(1)}M`
@@ -37,7 +38,11 @@ export function DashboardPage() {
           </Typography>
           <BarChart
             height={320}
-            xAxis={[{ scaleType: 'band', data: genreData.map((item) => item.label) }]}
+            xAxis={[{
+              scaleType: 'band',
+              data: genreData.map((item) => item.label),
+              colorMap: GENRE_COLORS,
+            }]}
             series={[{ label: 'Views (M)', data: genreData.map((item) => item.total) }]}
           />
         </Paper>
@@ -48,6 +53,7 @@ export function DashboardPage() {
           </Typography>
           <PieChart
             height={320}
+            colors={GENRE_COLORS.colors}
             series={[
               {
                 data: sourceData.map((item, index) => ({ id: index, label: item.label, value: Math.max(item.roi, 0.1) })),
@@ -68,6 +74,7 @@ export function DashboardPage() {
         </Typography>
         <LineChart
           height={300}
+          colors={[GENRE_COLORS.colors[0]]}
           xAxis={[{ scaleType: 'point', data: trendData.map((item) => item.month) }]}
           series={[{ label: 'Views (M)', data: trendData.map((item) => item.views), area: true }]}
         />

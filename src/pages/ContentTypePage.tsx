@@ -3,6 +3,7 @@ import { Paper, Stack, Typography } from '@mui/material'
 import { useOutletContext } from 'react-router-dom'
 import type { DashboardContext } from '../types'
 import { sourceRoi, typeEngagement } from '../lib/metrics'
+import { GENRE_COLORS } from '../data/contentData'
 
 export function ContentTypePage() {
   const { filteredRecords } = useOutletContext<DashboardContext>()
@@ -18,6 +19,7 @@ export function ContentTypePage() {
         <Typography variant="h6">Engagement by Content Type</Typography>
         <BarChart
           height={320}
+          colors={[GENRE_COLORS.colors[0]]}
           xAxis={[{ scaleType: 'band', data: engagement.map((item) => item.label) }]}
           series={[{ label: 'Views (M)', data: engagement.map((item) => item.total) }]}
         />

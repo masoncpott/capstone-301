@@ -29,19 +29,19 @@ export function AppThemeProvider({ children }: PropsWithChildren) {
           ...(mode === 'dark'
             ? {
                 background: {
-                  default: '#0b1318',
-                  paper: '#121f26',
+                  default: '#0c0b0e',
+                  paper: '#141318',
                 },
-                primary: { main: '#10b981' },
-                secondary: { main: '#fb7185' },
+                primary: { main: '#3BBDB5' },
+                secondary: { main: '#F4527F' },
               }
             : {
                 background: {
-                  default: '#f3f7f4',
+                  default: '#f4f4f6',
                   paper: '#ffffff',
                 },
-                primary: { main: '#047857' },
-                secondary: { main: '#be123c' },
+                primary: { main: '#1d857f' },
+                secondary: { main: '#F12B87' },
               }),
         },
         typography: {

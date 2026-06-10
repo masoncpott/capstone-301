@@ -11,6 +11,8 @@
 - must be mobile-first and responsive for a variety of screen sizes
 - must have light and dark modes, set to dark mode by default
 - must support multiple forms of user interaction and filtering
+- Use a modern, harmonious color palette, do not use a rainbow. Aim to use only a few colors but a range of values for each color.
+- Assign a different color (or value) to each genre.
 
 ## Product description:
 - We run a streaming company that competes with Netflix, Amazon Prime, AppleTV, etc.

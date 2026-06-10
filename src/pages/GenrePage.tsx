@@ -3,6 +3,7 @@ import { Paper, Stack, Typography } from '@mui/material'
 import { useOutletContext } from 'react-router-dom'
 import type { DashboardContext } from '../types'
 import { topRegionsByGenre } from '../lib/metrics'
+import { GENRE_COLORS } from '../data/contentData'
 
 export function GenrePage() {
   const { allRecords, filteredRecords } = useOutletContext<DashboardContext>()
@@ -18,7 +19,11 @@ export function GenrePage() {
         <Typography variant="h6">Genre Popularity</Typography>
         <BarChart
           height={340}
-          xAxis={[{ scaleType: 'band', data: genreData.map((item) => item.label) }]}
+          xAxis={[{
+            scaleType: 'band',
+            data: genreData.map((item) => item.label),
+            colorMap: GENRE_COLORS,
+          }]}
           series={[{ label: 'Views (M)', data: genreData.map((item) => item.total) }]}
         />
       </Paper>
